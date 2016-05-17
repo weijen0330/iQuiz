@@ -20,7 +20,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        tableView.delegate = self
+        tableView.dataSource = self
+        
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "quizCell")
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,11 +38,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCellWithIdentifier("quizCell")! as UITableViewCell
-        cell.textLabel!.text = self.categories[indexPath.row]
-        cell.detailTextLabel!.text = self.descriptions[indexPath.row]
-        cell.imageView?.image = self.images[indexPath.row]
-        return cell
+        var cell : UITableViewCell? = self.tableView.dequeueReusableCellWithIdentifier("quizCell")! as UITableViewCell
+        
+        if (cell != nil) {
+            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "cell")
+        }
+        
+        cell!.textLabel!.text = self.categories[indexPath.row]
+        cell!.detailTextLabel!.text = self.descriptions[indexPath.row]
+        cell!.imageView?.image = self.images[indexPath.row]
+        return cell!
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return CGFloat(indexPath.row) + 70.0;
     }
     
     @IBAction func showSettings(sender: UIBarButtonItem) {
